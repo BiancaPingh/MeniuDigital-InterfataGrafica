@@ -1,0 +1,3 @@
+<!-- Placeholder for icon - actual icon would be binary ICO file -->
+<!-- For demo purposes, create a simple icon using an online tool or use default -->
+

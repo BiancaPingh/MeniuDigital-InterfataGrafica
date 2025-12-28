@@ -1,0 +1,39 @@
+module unitbv.devops.meniudigitalui {
+    // 1. JavaFX modules needed
+    requires javafx.controls;
+    requires javafx.fxml;
+
+    // 2. Database and Persistence modules
+    requires jakarta.persistence;
+    requires org.hibernate.orm.core;
+    requires java.sql;
+    requires java.naming; // needed by Hibernate
+
+    // 3. XML binding (used by JAXB if needed)
+    requires jakarta.xml.bind;
+
+    // 4. JSON processing (Jackson)
+    requires com.fasterxml.jackson.core;      // needed for TypeReference
+    requires com.fasterxml.jackson.databind;  // needed for ObjectMapper
+    requires com.fasterxml.jackson.annotation; // needed for annotations
+
+    // 5. Export packages (what other modules can see)
+    exports unitbv.devops.meniudigitalui;
+    exports unitbv.devops.meniudigitalui.ui;
+    exports unitbv.devops.meniudigitalui.entity;
+    exports unitbv.devops.meniudigitalui.repository;
+    exports unitbv.devops.meniudigitalui.service;
+    exports unitbv.devops.meniudigitalui.db;
+
+    // 6. Opens for reflection (critical for JavaFX and Hibernate)
+    // JavaFX needs to instantiate Application class
+    opens unitbv.devops.meniudigitalui to javafx.graphics, javafx.fxml;
+    opens unitbv.devops.meniudigitalui.ui to javafx.fxml;
+
+    // Hibernate needs to read/write entities
+    opens unitbv.devops.meniudigitalui.entity to org.hibernate.orm.core, com.fasterxml.jackson.databind;
+
+    // 7. Declare service usage (needed for JPA provider)
+    uses jakarta.persistence.spi.PersistenceProvider;
+}
+
