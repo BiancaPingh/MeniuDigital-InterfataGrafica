@@ -78,13 +78,15 @@ public class GuestUI {
         VBox leftPanel = new VBox(10);
         leftPanel.setPadding(new Insets(10));
         leftPanel.setStyle("-fx-border-color: #cccccc; -fx-border-width: 0 1 0 0;");
-        leftPanel.setPrefWidth(260);
+        leftPanel.setPrefWidth(200); // Reduced from 260
 
         Label filterLabel = new Label("Filters");
         filterLabel.setStyle("-fx-font-weight: bold;");
 
+        // ... (rest of the method content remains the same until return)
+
         searchField = new TextField();
-        searchField.setPromptText("Search (e.g. Pizza)...");
+        searchField.setPromptText("Search...");
         searchField.textProperty().addListener((obs, old, n) -> applyFiltersAndOptionalSearch());
 
         vegetarianCheck = new CheckBox("Vegetarian only");
@@ -98,14 +100,14 @@ public class GuestUI {
         HBox priceBox = new HBox(5);
         minPrice = new Spinner<>(0, 1000, 0);
         maxPrice = new Spinner<>(0, 1000, 1000);
-        minPrice.setPrefWidth(80);
-        maxPrice.setPrefWidth(80);
+        minPrice.setPrefWidth(70);
+        maxPrice.setPrefWidth(70);
         minPrice.valueProperty().addListener((o, a, b) -> applyFiltersAndOptionalSearch());
         maxPrice.valueProperty().addListener((o, a, b) -> applyFiltersAndOptionalSearch());
         priceBox.getChildren().addAll(new Label("Min:"), minPrice, new Label("Max:"), maxPrice);
 
         Button clearFilters = new Button("Reset");
-        clearFilters.setPrefWidth(200);
+        clearFilters.setPrefWidth(180);
         clearFilters.setOnAction(e -> {
             searchField.clear();
             vegetarianCheck.setSelected(false);
@@ -116,7 +118,7 @@ public class GuestUI {
         });
 
         Button backButton = new Button("Back to Login");
-        backButton.setPrefWidth(200);
+        backButton.setPrefWidth(180);
         backButton.setOnAction(e -> backToLogin());
 
         leftPanel.getChildren().addAll(
@@ -131,8 +133,7 @@ public class GuestUI {
                 priceBox,
                 new Separator(),
                 clearFilters,
-                backButton
-        );
+                backButton);
 
         VBox.setVgrow(backButton, javafx.scene.layout.Priority.ALWAYS);
         return leftPanel;
@@ -143,23 +144,29 @@ public class GuestUI {
         centerPanel.setPadding(new Insets(10));
 
         menuTable = new TableView<>();
+        menuTable.setMinHeight(500); // Force minimum height
+        menuTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         menuTable.setPrefHeight(Double.MAX_VALUE);
 
         TableColumn<Produs, String> nameCol = new TableColumn<>("Product");
-        nameCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNume()));
-        nameCol.setPrefWidth(170);
+        nameCol.setCellValueFactory(
+                cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNume()));
+        nameCol.setMinWidth(200);
 
         TableColumn<Produs, String> typeCol = new TableColumn<>("Type");
-        typeCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getClass().getSimpleName()));
-        typeCol.setPrefWidth(90);
+        typeCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(
+                cellData.getValue().getClass().getSimpleName()));
+        typeCol.setMinWidth(100);
 
         TableColumn<Produs, Double> priceCol = new TableColumn<>("Price");
-        priceCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getPret()));
-        priceCol.setPrefWidth(80);
+        priceCol.setCellValueFactory(
+                cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getPret()));
+        priceCol.setMinWidth(80);
 
         TableColumn<Produs, Boolean> vegCol = new TableColumn<>("Veg");
-        vegCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getVegetarian()));
-        vegCol.setPrefWidth(60);
+        vegCol.setCellValueFactory(
+                cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getVegetarian()));
+        vegCol.setMinWidth(60);
 
         menuTable.getColumns().addAll(nameCol, typeCol, priceCol, vegCol);
 
@@ -178,7 +185,7 @@ public class GuestUI {
     private VBox createDetailsPanel() {
         VBox details = new VBox(8);
         details.setPadding(new Insets(10));
-        details.setPrefWidth(350);
+        details.setPrefWidth(250); // Reduced from 350
         details.setStyle("-fx-border-color: #cccccc; -fx-border-width: 0 0 0 1;");
 
         Label title = new Label("Details");
@@ -212,8 +219,7 @@ public class GuestUI {
                 new Label("Description:"),
                 detailDescriere,
                 new Label("Ingredients:"),
-                detailIngrediente
-        );
+                detailIngrediente);
 
         return details;
     }

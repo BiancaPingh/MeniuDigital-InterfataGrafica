@@ -36,6 +36,16 @@ public class DatabaseInitializer {
             session.persist(new User("admin", "admin123", UserRole.ADMIN));
             session.persist(new User("waiter1", "pass123", UserRole.STAFF));
             session.persist(new User("waiter2", "pass123", UserRole.STAFF));
+            session.persist(new User("guest", "guest", UserRole.GUEST));
+        } else {
+            // Ensure guest exists even if DB was already initialized
+            Long guestCount = session.createQuery("SELECT COUNT(u) FROM User u WHERE u.username = :u", Long.class)
+                    .setParameter("u", "guest")
+                    .getSingleResult();
+            if (guestCount == 0) {
+                session.persist(new User("guest", "guest", UserRole.GUEST));
+                System.out.println("[INIT] Admin/Staff existed, but Guest was missing. Created user 'guest'.");
+            }
         }
     }
 
